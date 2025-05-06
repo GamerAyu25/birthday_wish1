@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Special Birthday Countdown</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #f7c9d5, #ffe0f0);
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #b30059;
+      margin: 10px 0;
+      font-family: 'Comic Sans MS', cursive;
+      text-shadow: 1px 1px 2px #ffb6c1;
+    }
+
+    #countdown {
+      font-size: 2em;
+      margin-top: 10px;
+      color: #800040;
+      font-weight: bold;
+      font-family: 'Lucida Handwriting', cursive;
+    }
+
+    .message-box {
+      background-color: #ffe6f0;
+      border: 2px dashed #ff99cc;
+      border-radius: 15px;
+      padding: 20px 30px;
+      margin-top: 30px;
+      font-size: 1.3em;
+      color: #b30059;
+      font-family: 'Segoe Script', cursive;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .heart {
+      position: absolute;
+      color: #ff69b4;
+      animation: floatHearts 7s linear infinite;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    @keyframes floatHearts {
+      0% { transform: translateY(0) scale(1); opacity: 0.9; }
+      100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+    }
+
+    #reveal-button {
+      display: none;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background-color: #ff66b2;
+      color: white;
+      font-size: 1.2em;
+      font-family: 'Comic Sans MS', cursive;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 2px 2px 8px #d94f92;
+      transition: background-color 0.3s;
+    }
+
+    #reveal-button:hover {
+      background-color: #e055a1;
+    }
+
+    /* Flip Card Styling */
+    .flip-container {
+      perspective: 1000px;
+      margin-top: 30px;
+    }
+
+    .flip-card {
+      width: 300px;
+      height: 200px;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .flip-container.flipped .flip-card {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      font-family: 'Segoe Print', cursive;
+      font-size: 1.1em;
+    }
+
+    .flip-front {
+      background-color: #fff0f5;
+      color: #b30059;
+    }
+
+    .flip-back {
+      background-color: #ffe6f0;
+      color: #800040;
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="screen">
+    <h1>💗 Your Special Day is Almost Here! 💗</h1>
+    <div id="loading-hearts"></div>
+  </div>
+
+  <!-- Main Countdown Screen -->
+  <div id="main-screen" class="screen">
+    <h1>Countdown to Happiness 💗</h1>
+    <div id="countdown"></div>
+    <div class="message-box">Just a little more... A small gift favorite person❤</div>
+    <button id="reveal-button">For You →</button>
+    <div id="main-hearts"></div>
+  </div>
+
+  <!-- Birthday Reveal Screen -->
+  <div id="birthday-screen" class="screen">
+    <h1>🎉 Happy Birthday! 🎉</h1>
+    <h2 style="color:#b30059; font-family: 'Segoe Script', cursive;">To my Cutiepie</h2>
+    <div class="flip-container" id="flipContainer">
+      <div class="flip-card">
+        <div class="flip-card-side flip-front">
+          Tap to open 💝
+        </div>
+        <div class="flip-card-side flip-back">
+          Just wanted to remind you—you’re my favorite person. My days are better, smiles are wider, and life is sweeter because of you.<br><br>
+          I hope your birthday is full of love, magic, and everything that makes you smile ❤
+        </div>
+      </div>
+    </div>
+    <div id="birthday-hearts"></div>
+  </div>
+
+  <script>
+    function createHearts(containerId) {
+      const container = document.getElementById(containerId);
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerText = '💗';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        heart.style.animationDelay = Math.random() * 2 + 's';
+        heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        container.appendChild(heart);
+      }
+    }
+
+    createHearts('loading-hearts');
+    createHearts('main-hearts');
+    createHearts('birthday-hearts');
+
+    window.onload = function () {
+      document.getElementById('loading-screen').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('main-screen').style.display = 'flex';
+      }, 3000);
+    };
+
+    const targetDate = new Date('May 16, 2025 00:00:00').getTime();
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = `0d 0h 0m 0s`;
+        clearInterval(countdownInterval);
+        document.getElementById("reveal-button").style.display = "inline-block";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("countdown").innerHTML =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    document.getElementById("reveal-button").addEventListener("click", () => {
+      document.getElementById("main-screen").style.display = "none";
+      document.getElementById("birthday-screen").style.display = "flex";
+    });
+
+    // Flip card on click
+    document.getElementById("flipContainer").addEventListener("click", () => {
+      document.getElementById("flipContainer").classList.toggle("flipped");
+    });
+  </script>
+</body>
+</html>
